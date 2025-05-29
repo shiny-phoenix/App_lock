@@ -31,9 +31,11 @@ jobs:
         curl -L -o poi.zip https://downloads.apache.org/poi/release/src/apache-poi-src-5.4.1-20250401.zip
         unzip poi.zip -d poi
 
-        # Move all JARs into a lib directory for easier classpath referencing
         mkdir poi_libs
-        find poi -name "*.jar" -exec cp {} poi_libs/ \;
+        # Copy all required jars to poi_libs
+        cp poi/poi-5.2.3/*.jar poi_libs/
+        cp poi/ooxml-lib/*.jar poi_libs/
+        cp poi/lib/*.jar poi_libs/
 
     - name: Compile Java code
       run: |
@@ -41,10 +43,7 @@ jobs:
 
     - name: Run Java program
       run: |
-        # Navigate to lib/services directory and run the compiled Java class
-        cd lib/services
-        java -cp ".:poi_libs/*:lib/services" update_excel
-        cd ../../
+        java -cp "poi_libs/*:lib" services.update_excel
 
     - name: Upload pending count
       uses: actions/upload-artifact@v4
