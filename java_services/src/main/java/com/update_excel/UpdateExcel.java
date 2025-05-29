@@ -8,7 +8,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class UpdateExcel {
     public static void main(String[] args) {
         try {
-            FileInputStream fis = new FileInputStream("timetable.xlsm");
+            FileInputStream fis = new FileInputStream("../timetable.xlsm");
             POIFSFileSystem fs = new POIFSFileSystem(fis);
             Workbook workbook = WorkbookFactory.create(fs);
             Sheet sheet = workbook.getSheetAt(0);
@@ -37,7 +37,7 @@ public class UpdateExcel {
             }
 
             // Write total pending count to output file
-            try (FileWriter fw = new FileWriter("pending_output.txt")) {
+            try (FileWriter fw = new FileWriter("../pending_output.txt")) {
                 fw.write(String.valueOf(totalPending));
             }
 
@@ -46,7 +46,7 @@ public class UpdateExcel {
 
         } catch (Exception e) {
             e.printStackTrace();
-            try (FileWriter fw = new FileWriter("pending_output.txt")) {
+            try (FileWriter fw = new FileWriter("../pending_output.txt")) {
                 fw.write("-1"); // Error code
             } catch (Exception ex) {
                 ex.printStackTrace();
