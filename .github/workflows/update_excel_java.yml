@@ -25,6 +25,10 @@ jobs:
     - name: Download Excel file from Google Drive
       run: |
         gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
+        
+    - name: Move Excel file into java_services directory
+      run: |
+        mv timetable.xlsm ./java_services/timetable.xlsm
 
     - name: Run Java Maven project to update Excel
       working-directory: ./java_services
