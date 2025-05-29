@@ -1,0 +1,54 @@
+name: Update Excel and Publish Pending Count (Java)
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  process_excel:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install gdown for downloading Excel file
+      run: pip install gdown
+
+    - name: Download Excel file from Google Drive
+      run: |
+        gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
+
+    - name: Download Apache POI
+      run: |
+        curl -L -o poi.zip https://downloads.apache.org/poi/release/bin/poi-bin-5.2.3-20230630.zip
+        unzip poi.zip -d poi
+
+    - name: Compile Java code
+      run: |
+        # Set POI classpath
+        POI_CP=".:poi/poi-5.2.3/poi-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-lite-5.2.3.jar:poi/poi-5.2.3/lib/commons-collections4-4.4.jar:poi/poi-5.2.3/lib/commons-compress-1.21.jar:poi/poi-5.2.3/lib/xmlbeans-5.1.1.jar"
+
+        javac -cp "$POI_CP" lib/services/update_excel.java
+
+    - name: Run Java program
+      run: |
+        POI_CP=".:poi/poi-5.2.3/poi-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-lite-5.2.3.jar:poi/poi-5.2.3/lib/commons-collections4-4.4.jar:poi/poi-5.2.3/lib/commons-compress-1.21.jar:poi/poi-5.2.3/lib/xmlbeans-5.1.1.jar"
+        
+        # Navigate to lib/services directory and run the compiled Java class
+        cd lib/services
+        java -cp "$POI_CP" update_excel
+        cd ../../
+
+    - name: Upload pending count
+      uses: actions/upload-artifact@v3
+      with:
+        name: pending-count
+        path: pending_output.txt
