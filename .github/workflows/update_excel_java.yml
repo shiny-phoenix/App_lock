@@ -28,7 +28,7 @@ jobs:
 
     - name: Download Apache POI
       run: |
-        curl -L -o poi.zip https://downloads.apache.org/poi/release/bin/poi-bin-5.2.3-20230630.zip
+        curl -L -o poi.zip https://downloads.apache.org/poi/release/src/apache-poi-src-5.4.1-20250401.zip
         unzip poi.zip -d poi
 
     - name: Compile Java code
