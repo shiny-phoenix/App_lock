@@ -47,6 +47,8 @@ public class UpdateExcel {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            System.exit(1);
+
         }
     }
 }
