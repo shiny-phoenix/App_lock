@@ -31,20 +31,19 @@ jobs:
         curl -L -o poi.zip https://downloads.apache.org/poi/release/src/apache-poi-src-5.4.1-20250401.zip
         unzip poi.zip -d poi
 
+        # Move all JARs into a lib directory for easier classpath referencing
+        mkdir poi_libs
+        find poi -name "*.jar" -exec cp {} poi_libs/ \;
+
     - name: Compile Java code
       run: |
-        # Set POI classpath
-        POI_CP=".:poi/poi-5.2.3/poi-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-lite-5.2.3.jar:poi/poi-5.2.3/lib/commons-collections4-4.4.jar:poi/poi-5.2.3/lib/commons-compress-1.21.jar:poi/poi-5.2.3/lib/xmlbeans-5.1.1.jar"
-
-        javac -cp "$POI_CP" lib/services/update_excel.java
+        javac -cp "poi_libs/*" lib/services/update_excel.java
 
     - name: Run Java program
       run: |
-        POI_CP=".:poi/poi-5.2.3/poi-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-5.2.3.jar:poi/poi-5.2.3/poi-ooxml-lite-5.2.3.jar:poi/poi-5.2.3/lib/commons-collections4-4.4.jar:poi/poi-5.2.3/lib/commons-compress-1.21.jar:poi/poi-5.2.3/lib/xmlbeans-5.1.1.jar"
-        
         # Navigate to lib/services directory and run the compiled Java class
         cd lib/services
-        java -cp "$POI_CP" update_excel
+        java -cp ".:poi_libs/*:lib/services" update_excel
         cd ../../
 
     - name: Upload pending count
