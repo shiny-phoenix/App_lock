@@ -24,6 +24,7 @@ jobs:
 
     - name: Download Excel file from Google Drive
       run: |
+        # url format : https://drive.google.com/uc?export=download&id=id that can be found in the url when we open the file uploaded on drive, its the string after the "d/" endpoint substring
         gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
         
     - name: Move Excel file into java_services directory
