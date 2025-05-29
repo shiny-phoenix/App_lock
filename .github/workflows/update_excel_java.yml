@@ -48,7 +48,7 @@ jobs:
         cd ../../
 
     - name: Upload pending count
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: pending-count
         path: pending_output.txt
