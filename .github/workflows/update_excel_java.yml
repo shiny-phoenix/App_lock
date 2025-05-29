@@ -26,24 +26,11 @@ jobs:
       run: |
         gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
 
-    - name: Download Apache POI
+    - name: Run Java Maven project to update Excel
+      working-directory: ./java_services
       run: |
-        curl -L -o poi.zip https://downloads.apache.org/poi/release/src/apache-poi-src-5.4.1-20250401.zip
-        unzip poi.zip -d poi
-
-        mkdir poi_libs
-        # Copy all required jars to poi_libs
-        cp poi/poi-5.2.3/*.jar poi_libs/
-        cp poi/ooxml-lib/*.jar poi_libs/
-        cp poi/lib/*.jar poi_libs/
-
-    - name: Compile Java code
-      run: |
-        javac -cp "poi_libs/*" lib/services/update_excel.java
-
-    - name: Run Java program
-      run: |
-        java -cp "poi_libs/*:lib" services.update_excel
+        mvn clean package
+        mvn exec:java
 
     - name: Upload pending count
       uses: actions/upload-artifact@v4
