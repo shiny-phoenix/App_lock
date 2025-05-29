@@ -8,7 +8,7 @@ public class UpdateExcel {
     public static void main(String[] args) {
         try (FileInputStream fis = new FileInputStream("./timetable.xlsm")) {
             Workbook workbook = WorkbookFactory.create(fis);
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet = workbook.getSheet("timetable");
 
             int totalPending = 0;
 
