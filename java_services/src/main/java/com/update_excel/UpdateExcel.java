@@ -8,7 +8,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class UpdateExcel {
     public static void main(String[] args) {
         try {
-            FileInputStream fis = new FileInputStream("../timetable.xlsm");
+            FileInputStream fis = new FileInputStream("./timetable.xlsm");
             POIFSFileSystem fs = new POIFSFileSystem(fis);
             Workbook workbook = WorkbookFactory.create(fs);
             Sheet sheet = workbook.getSheetAt(0);
