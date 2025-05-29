@@ -2,15 +2,12 @@ package main.java.com.update_excel;
 
 import java.io.*;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class UpdateExcel {
     public static void main(String[] args) {
-        try {
-            FileInputStream fis = new FileInputStream("./timetable.xlsm");
-            POIFSFileSystem fs = new POIFSFileSystem(fis);
-            Workbook workbook = WorkbookFactory.create(fs);
+        try (FileInputStream fis = new FileInputStream("./timetable.xlsm")) {
+            Workbook workbook = WorkbookFactory.create(fis);
             Sheet sheet = workbook.getSheetAt(0);
 
             int totalPending = 0;
@@ -41,7 +38,6 @@ public class UpdateExcel {
                 fw.write(String.valueOf(totalPending));
             }
 
-            fis.close();
             workbook.close();
 
         } catch (Exception e) {
