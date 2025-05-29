@@ -1,9 +1,11 @@
+package main.java.com.update_excel;
+
 import java.io.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-public class update_excel {
+public class UpdateExcel {
     public static void main(String[] args) {
         try {
             FileInputStream fis = new FileInputStream("../timetable.xlsm");
