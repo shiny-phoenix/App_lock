@@ -2,7 +2,7 @@ name: Update Excel and Publish Pending Count (Java)
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -10,35 +10,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - name: Hello world
+      run: echo "Hello world"
+      
+    # - name: Checkout code
+    #   uses: actions/checkout@v4
 
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+    # - name: Set up Java
+    #   uses: actions/setup-java@v3
+    #   with:
+    #     distribution: 'temurin'
+    #     java-version: '17'
 
-    - name: Install gdown for downloading Excel file
-      run: pip install gdown
+    # - name: Install gdown for downloading Excel file
+    #   run: pip install gdown
 
-    - name: Download Excel file from Google Drive
-      run: |
-        # url format : https://drive.google.com/uc?export=download&id=id that can be found in the url when we open the file uploaded on drive, its the string after the "d/" endpoint substring
-        gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
+    # - name: Download Excel file from Google Drive
+    #   run: |
+    #     # url format : https://drive.google.com/uc?export=download&id=id that can be found in the url when we open the file uploaded on drive, its the string after the "d/" endpoint substring
+    #     gdown "${{ secrets.EXCEL_URL_LINK }}" -O timetable.xlsm
         
-    - name: Move Excel file into java_services directory
-      run: |
-        mv timetable.xlsm ./java_services/timetable.xlsm
+    # - name: Move Excel file into java_services directory
+    #   run: |
+    #     mv timetable.xlsm ./java_services/timetable.xlsm
 
-    - name: Run Java Maven project to update Excel
-      working-directory: ./java_services
-      run: |
-        mvn clean package
-        mvn exec:java
+    # - name: Run Java Maven project to update Excel
+    #   working-directory: ./java_services
+    #   run: |
+    #     mvn clean package
+    #     mvn exec:java
 
-    - name: Upload pending count
-      uses: actions/upload-artifact@v4
-      with:
-        name: pending-count
-        path: pending_output.txt
+    # - name: Upload pending count
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: pending-count
+    #     path: pending_output.txt
